@@ -1,0 +1,18 @@
+{
+  "discoveryRunId": "48cd4b88-e716-4054-a90b-16b5f8381f9f",
+  "plannerProvider": "openai",
+  "plannerModel": "gpt-5.4-mini",
+  "replay": {
+    "runId": "1fed27fe-4474-4885-bf24-da4edb7c9953",
+    "status": "success",
+    "code": "OK"
+  },
+  "businessOutcome": {
+    "runId": "77718235-7ac8-473d-b587-bc467aed52ab",
+    "status": "business_outcome",
+    "code": "MEMBER_NOT_FOUND",
+    "evidence": [
+      "evidence\\live-replay\\77718235-7ac8-473d-b587-bc467aed52ab-step-02-failure.png"
+    ]
+  }
+}

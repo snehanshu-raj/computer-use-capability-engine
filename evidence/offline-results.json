@@ -1,0 +1,31 @@
+{
+  "provenance": "scripted planner for repeatable CI evidence, not the required live LLM run",
+  "discoveryRunId": "1bbd5e9c-889b-4441-b45b-5c59215249e6",
+  "success": {
+    "runId": "200635e8-028b-4f80-9333-c12a91461440",
+    "status": "success",
+    "code": "OK",
+    "outputNames": [
+      "savingsBalance"
+    ],
+    "evidence": []
+  },
+  "businessOutcome": {
+    "runId": "2775b468-b6da-435c-ac6c-cd85f61a0392",
+    "status": "business_outcome",
+    "code": "MEMBER_NOT_FOUND",
+    "outputNames": [],
+    "evidence": [
+      "evidence\\offline-replay\\2775b468-b6da-435c-ac6c-cd85f61a0392-step-02-failure.png"
+    ]
+  },
+  "handoff": {
+    "runId": "74a8e903-b3f2-4ea3-a21d-382c03b2a9fa",
+    "status": "success",
+    "code": "OK",
+    "outputNames": [
+      "savingsBalance"
+    ],
+    "evidence": []
+  }
+}

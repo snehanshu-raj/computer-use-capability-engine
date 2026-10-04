@@ -1,0 +1,227 @@
+{
+  "schemaVersion": "1.0",
+  "capability": {
+    "id": "northstar.lookup-savings-balance",
+    "name": "Lookup savings balance",
+    "description": "Find a synthetic training member and return the current savings balance.",
+    "revision": 1,
+    "status": "draft",
+    "createdAt": "2026-10-02T23:34:41.183Z",
+    "discoveredBy": {
+      "provider": "scripted-test",
+      "model": "deterministic-fixture-v1",
+      "runId": "1bbd5e9c-889b-4441-b45b-5c59215249e6"
+    }
+  },
+  "target": {
+    "appId": "northstar-core-training",
+    "vendor": "Northstar Demo Systems",
+    "appVersion": "1.0",
+    "baseUrl": "http://127.0.0.1:4173",
+    "tenantVariant": "training-default",
+    "surfaceAdapter": "playwright-web-v1"
+  },
+  "inputs": {
+    "memberId": {
+      "type": "string",
+      "description": "Five-digit synthetic training member number.",
+      "required": true,
+      "pattern": "^\\d{5}$",
+      "sensitive": true,
+      "example": null
+    }
+  },
+  "outputs": {
+    "savingsBalance": {
+      "type": "string",
+      "description": "Current savings balance as displayed by the target application.",
+      "sensitive": true
+    }
+  },
+  "policy": {
+    "allowedOrigins": [
+      "http://127.0.0.1:4173"
+    ],
+    "allowedPathPatterns": [
+      "/",
+      "/app"
+    ],
+    "allowedActions": [
+      "navigate",
+      "fill",
+      "click",
+      "extract",
+      "assert",
+      "wait"
+    ],
+    "riskyActionsRequireHuman": true,
+    "sensitiveInputNames": [
+      "memberId"
+    ]
+  },
+  "steps": [
+    {
+      "id": "step-01",
+      "action": "fill",
+      "description": "Enter the requested member number",
+      "target": {
+        "description": "Member number",
+        "strategies": [
+          {
+            "kind": "label",
+            "value": "Member number",
+            "role": null,
+            "exact": true
+          },
+          {
+            "kind": "role",
+            "value": "Member number",
+            "role": "textbox",
+            "exact": true
+          },
+          {
+            "kind": "css",
+            "value": "[name=\"memberNumber\"]",
+            "role": null,
+            "exact": true
+          },
+          {
+            "kind": "css",
+            "value": "[id=\"member-number\"]",
+            "role": null,
+            "exact": true
+          }
+        ]
+      },
+      "value": "{{memberId}}",
+      "outputName": null,
+      "risk": "safe",
+      "timeoutMs": 10000,
+      "checkpoint": null
+    },
+    {
+      "id": "step-02",
+      "action": "click",
+      "description": "Submit the member lookup",
+      "target": {
+        "description": "Search member records",
+        "strategies": [
+          {
+            "kind": "role",
+            "value": "Search member records",
+            "role": "button",
+            "exact": true
+          },
+          {
+            "kind": "text",
+            "value": "Search member records",
+            "role": null,
+            "exact": true
+          }
+        ]
+      },
+      "value": null,
+      "outputName": null,
+      "risk": "safe",
+      "timeoutMs": 10000,
+      "checkpoint": null
+    },
+    {
+      "id": "step-03",
+      "action": "click",
+      "description": "Open the matching member profile",
+      "target": {
+        "description": "Open member profile",
+        "strategies": [
+          {
+            "kind": "role",
+            "value": "Open member profile",
+            "role": "button",
+            "exact": true
+          },
+          {
+            "kind": "css",
+            "value": "[name=\"openProfile\"]",
+            "role": null,
+            "exact": true
+          },
+          {
+            "kind": "text",
+            "value": "Open member profile",
+            "role": null,
+            "exact": true
+          }
+        ]
+      },
+      "value": null,
+      "outputName": null,
+      "risk": "safe",
+      "timeoutMs": 10000,
+      "checkpoint": null
+    },
+    {
+      "id": "step-04",
+      "action": "extract",
+      "description": "Extract declared output savingsBalance",
+      "target": {
+        "description": "declared output savingsBalance",
+        "strategies": [
+          {
+            "kind": "css",
+            "value": "[id=\"detail-balance\"]",
+            "role": null,
+            "exact": true
+          }
+        ]
+      },
+      "value": null,
+      "outputName": "savingsBalance",
+      "risk": "safe",
+      "timeoutMs": 10000,
+      "checkpoint": null
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "member-not-found",
+      "category": "business_outcome",
+      "matchText": "No member found for number",
+      "code": "MEMBER_NOT_FOUND",
+      "message": "No matching member exists.",
+      "recovery": "none",
+      "maxAttempts": 0
+    },
+    {
+      "id": "session-expired",
+      "category": "recoverable",
+      "matchText": "Session expired",
+      "code": "SESSION_EXPIRED",
+      "message": "The session expired and requires human reauthentication.",
+      "recovery": "human_handoff",
+      "maxAttempts": 1
+    },
+    {
+      "id": "permission-denied",
+      "category": "hard_failure",
+      "matchText": "Permission denied",
+      "code": "PERMISSION_DENIED",
+      "message": "The current operator is not permitted to view this member.",
+      "recovery": "none",
+      "maxAttempts": 0
+    },
+    {
+      "id": "validation-error",
+      "category": "hard_failure",
+      "matchText": "Validation error",
+      "code": "VALIDATION_ERROR",
+      "message": "The target application rejected the supplied input.",
+      "recovery": "none",
+      "maxAttempts": 0
+    }
+  ],
+  "success": {
+    "kind": "visible_text",
+    "expected": "Member savings profile loaded successfully.",
+    "target": null
+  }
+}
